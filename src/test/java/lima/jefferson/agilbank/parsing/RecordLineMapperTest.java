@@ -1,5 +1,6 @@
 package lima.jefferson.agilbank.parsing;
 
+import lima.jefferson.agilbank.exceptions.InvalidLineException;
 import lima.jefferson.agilbank.records.Record;
 import lima.jefferson.agilbank.records.RecordType;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,21 +25,23 @@ public class RecordLineMapperTest {
         String type = "001";
         String attr1 = "attr1";
         String attr2 = "attr2";
+        String attr3 = "attr3";
 
-        String inputString = String.format("%sç%sç%s", type, attr1, attr2);
+        String inputString = String.format("%sç%sç%sç%s", type, attr1, attr2, attr3);
 
         Record record = this.mapper.mapLine(inputString, 0);
         List<String> attributes = record.getAttributes();
 
         assertEquals(RecordType.SALESMAN, record.getType());
-        assertEquals(2, attributes.size());
+        assertEquals(3, attributes.size());
         assertEquals(attr1, attributes.get(0));
         assertEquals(attr2, attributes.get(1));
+        assertEquals(attr3, attributes.get(2));
     }
 
     @Test
     public void testLineMapperWithEmptyLine() {
-        assertThrows(RuntimeException.class, () -> {
+        assertThrows(InvalidLineException.class, () -> {
            this.mapper.mapLine("", 0);
         });
     }
