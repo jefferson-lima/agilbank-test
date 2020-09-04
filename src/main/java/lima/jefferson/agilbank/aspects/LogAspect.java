@@ -39,4 +39,9 @@ public class LogAspect {
     private void afterFromStringList(JoinPoint joinPoint, Object entity) {
         log.debug("Converted entity: " + entity.toString());
     }
+
+    @AfterThrowing(pointcut = "execution(* lima.jefferson.agilbank.*.*.*(..))", throwing = "ex")
+    public void afterException(Exception ex) {
+        log.warn(ex.getMessage());
+    }
 }

@@ -34,12 +34,10 @@ public class BatchConfiguration {
     public static final String SALES_REPORT_JOB_NAME = "saleReportJob";
     private static final String GENERATE_REPORT_STEP_NAME = "generateReport";
     private static final int CHUNK_SIZE = 10000;
+    private static final int SKIP_LIMIT = 100;
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
-
-    @Value("${output.file.path}")
-    private String outputFilePath;
 
     @Value("file:${input.directory}/*.${input.extension}")
     private Resource[] inputResources;
@@ -61,12 +59,19 @@ public class BatchConfiguration {
     }
 
     @Bean
-    public Step generateReportStep(MultiResourceItemReader<Record> multiResourceReader, RecordProcessor processor) {
+    public Step generateReportStep(
+        MultiResourceItemReader<Record> multiResourceReader,
+        RecordProcessor processor,
+        SalesReportWriter writer
+    ) {
         return this.stepBuilderFactory.get(GENERATE_REPORT_STEP_NAME)
                 .<Record, Entity> chunk(CHUNK_SIZE)
                 .reader(multiResourceReader)
                 .processor(processor)
-                .writer(new SalesReportWriter(this.outputFilePath))
+                .writer(writer)
+                .faultTolerant()
+                .skip(Exception.class)
+                .skipLimit(SKIP_LIMIT)
                 .build();
     }
 
