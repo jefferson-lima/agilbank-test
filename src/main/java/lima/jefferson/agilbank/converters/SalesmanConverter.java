@@ -1,7 +1,6 @@
 package lima.jefferson.agilbank.converters;
 
 import lima.jefferson.agilbank.entities.Salesman;
-import lima.jefferson.agilbank.records.RecordType;
 
 import java.math.BigDecimal;
 import java.util.List;
