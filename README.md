@@ -22,6 +22,18 @@ Para executar os testes deve ser rodado o seguinte comando:
 
 Para executar no Windows, trocar `mvnw` por `mvnw.cmd`
 
+## Logs
+
+O nível do log pode ser definido passando um argumento para o Spring boot como segue:
+
+`./mvnw clean spring-boot:run -Dspring-boot.run.arguments=--logging.level.lima.jefferson=DEBUG`
+
+O processamento dos dados é logado em nível DEBUG, e o relatório final em INFO. Caso ocorra alguma
+exceção, ela é logada como WARNING.
+
+Os logs foram implementados usando AOP através do `LogAspect` que define pointcuts em alguns
+métodos específicos, bem como ao ser lançada uma exçeção.  
+
 ## Executando com Docker
 
 Criando a imagem:
