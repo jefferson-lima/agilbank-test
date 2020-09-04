@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RecordLineMapperTest {
 
@@ -33,6 +34,13 @@ public class RecordLineMapperTest {
         assertEquals(2, attributes.size());
         assertEquals(attr1, attributes.get(0));
         assertEquals(attr2, attributes.get(1));
+    }
+
+    @Test
+    public void testLineMapperWithEmptyLine() {
+        assertThrows(RuntimeException.class, () -> {
+           this.mapper.mapLine("", 0);
+        });
     }
 
 }
